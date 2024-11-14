@@ -17,13 +17,10 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
   res.status(200).json({
-  	message : "alskjdlkak alksdj lkaj sdlkjlja skj jlkajsdlkjalscdklj klj askdj kj asldjk  kjdlkj askdj lkj fsj klakj sdkj ne jalksdn kjd sakj id lkjas dkj aslkdj vsdlkj if you feel confident about the thing that you are doing then relay on allah and be confident and yes, never forget to seek confidence from almighty allah"});
+  	message : "home page"
+  });
 });
 
-app.listen(port,()=>{
-  connectDB();
-  console.log(`surver is running on port -> https://localhost: ${port}`)
-});
 
 app.post('/api/products', (req, res) => {
   const new_product = req.body;
@@ -55,4 +52,40 @@ app.get('/api/products',(req,res)=>{
   .catch(err=>{
     res.status(404).json({message : err.message});
   })
+});
+
+
+app.delete('/api/products/:id',(req,res)=>{
+  const {id} = req.params;
+
+  Product.findByIdAndDelete(id)
+  .then(result=>{
+    res.status(200).json({ message : result})
+  })
+  .catch(err=>{
+    res.status(500).json({ error : err.message})
+  })
+});
+
+
+app.patch('/api/products/:id',(req,res)=>{
+  const {id} = req.params;
+
+  const updated_product = req.body;
+
+  Product.findByIdAndUpdate(id,updated_product)
+  .then(result=>{
+    res.status(200).json({ message : updated_product})
+  })
+  .catch(err=>{
+    res.status(500).json({ error : err.message})
+  })
+});
+
+
+
+
+app.listen(port,()=>{
+  connectDB();
+  console.log(`surver is running on port -> https://localhost: ${port}`)
 });
